@@ -1,5 +1,9 @@
 package controls;
 
+import Themes.Dark;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
@@ -10,8 +14,6 @@ import javafx.geometry.Pos;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.*;
-
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 import neumorphism.Neumorphism;
@@ -20,32 +22,47 @@ import neumorphism.TypeNeumorphism;
 public class DNeuToggleSwitch extends ToggleButton {
 
     private final ObjectProperty<TypeNeumorphism> neumorphism = new SimpleObjectProperty<>(TypeNeumorphism.INNER);
-    private final DoubleProperty radius = new SimpleDoubleProperty(100);
-
+    private final DoubleProperty radius = new SimpleDoubleProperty(300);
 
     public DNeuToggleSwitch() {
         super();
 
         prefWidthProperty().set(90);
         prefHeightProperty().set(40);
-        Region region = new Region();
-        region.setMaxSize(getPrefHeight(),getPrefHeight());
-        region.setMinSize(getPrefHeight(),getPrefHeight());
-        region.setPrefSize(getPrefHeight(),getPrefHeight());
-
-        setAlignment(Pos.CENTER_LEFT);
-        setContentDisplay(ContentDisplay.LEFT);
-
-        Neumorphism.setNeumorphism(region,TypeNeumorphism.OUTER, 50.0);
-        region.setBackground(new Background(new BackgroundFill(Color.web("#243441"),new CornerRadii(getRadius()),null)));
-        setGraphic(region);
-
         Neumorphism.setNeumorphism(this, getNeumorphism(), getRadius());
 
-        textProperty().addListener((observable, oldValue, newValue) -> setText(""));
-        fontProperty().addListener((observable, oldValue, newValue) -> setFont(Font.font(13)));
+        Pane background = new Pane();
+        background.setMaxSize(getPrefWidth(),getPrefHeight());
+        background.setMinSize(getPrefWidth(),getPrefHeight());
+        background.setPrefSize(getPrefWidth(),getPrefHeight());
+        background.setBackground(new Background(new BackgroundFill(this.getBackground().getFills().get(0).getFill(), new CornerRadii(getRadius()), Insets.EMPTY)));
 
-        this.neumorphismProperty().addListener((observable, oldValue, newValue) -> {
+        Region toggle = new Region();
+        toggle.setMaxSize(getPrefHeight(),getPrefHeight());
+        toggle.setMinSize(getPrefHeight(),getPrefHeight());
+        toggle.setPrefSize(getPrefHeight(),getPrefHeight());
+        toggle.setBackground(new Background(new BackgroundFill(this.getBackground().getFills().get(0).getFill(),new CornerRadii(getRadius()),null)));
+        Neumorphism.setNeumorphism(toggle,TypeNeumorphism.OUTER, getRadius());
+
+        background.getChildren().add(toggle);
+        setGraphic(background);
+
+        textProperty().addListener(observable -> setText(""));
+        fontProperty().addListener(observable -> setFont(Font.font(13)));
+        contentDisplayProperty().addListener(observable -> setContentDisplay(ContentDisplay.GRAPHIC_ONLY));
+
+
+        focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                Neumorphism.setNeumorphismFocus(this,getNeumorphism(),getRadius());
+                Neumorphism.setNeumorphismFocus(toggle,TypeNeumorphism.OUTER,getRadius());
+            } else {
+                Neumorphism.setNeumorphism(this,getNeumorphism(),getRadius());
+                Neumorphism.setNeumorphism(toggle,TypeNeumorphism.OUTER,getRadius());
+            }
+        });
+
+        this.neumorphismProperty().addListener(observable -> {
             TypeNeumorphism type = getNeumorphism();
             if (type == TypeNeumorphism.OUTER) {
                 Neumorphism.setNeumorphism(this, TypeNeumorphism.OUTER, getRadius());
@@ -57,30 +74,57 @@ public class DNeuToggleSwitch extends ToggleButton {
                 Neumorphism.setNeumorphism(this, TypeNeumorphism.NONE, getRadius());
             }
         });
+
         this.radiusProperty().addListener((observable, oldValue, newValue) -> {
             this.setBackground(new Background(new BackgroundFill(this.getBackground().getFills().get(0).getFill(), new CornerRadii((double) newValue), Insets.EMPTY)));
-            region.setBackground(new Background(new BackgroundFill(Color.web("#243441"),new CornerRadii(getRadius()),null)));
+            toggle.setBackground(new Background(new BackgroundFill(Dark.ROOT,new CornerRadii(getRadius()),null)));
+            background.setBackground(new Background(new BackgroundFill(Dark.ROOT,new CornerRadii(getRadius()),null)));
         });
 
-        this.prefHeightProperty().addListener((observable, oldValue, newValue) -> {
-            region.setMaxSize(getPrefHeight(),getPrefHeight());
-            region.setMinSize(getPrefHeight(),getPrefHeight());
-            region.setPrefSize(getPrefHeight(),getPrefHeight());
+        this.prefHeightProperty().addListener(observable -> {
+            background.setMaxSize(getPrefWidth(),getPrefHeight());
+            background.setMinSize(getPrefWidth(),getPrefHeight());
+            background.setPrefSize(getPrefWidth(),getPrefHeight());
+
+            toggle.setMaxSize(getPrefHeight(),getPrefHeight());
+            toggle.setMinSize(getPrefHeight(),getPrefHeight());
+            toggle.setPrefSize(getPrefHeight(),getPrefHeight());
+        });
+        this.prefWidthProperty().addListener(observable -> {
+            background.setMaxSize(getPrefWidth(),getPrefHeight());
+            background.setMinSize(getPrefWidth(),getPrefHeight());
+            background.setPrefSize(getPrefWidth(),getPrefHeight());
         });
 
-        setOnAction(event -> {
+        this.selectedProperty().addListener(observable-> {
+            Timeline timeline = new Timeline();
             if (this.isSelected()){
-                setBackground(new Background(new BackgroundFill(Color.web("#0AFFEF"),new CornerRadii(getRadius()),null)));
-                TranslateTransition transition = new TranslateTransition(Duration.millis(300), graphicProperty().get());
-                transition.setToX((getPrefWidth() - graphicProperty().get().getBoundsInLocal().getWidth())-6);
+                TranslateTransition transition = new TranslateTransition(Duration.millis(300),toggle);
+                transition.setToX(background.getPrefWidth() - toggle.getPrefWidth());
                 transition.play();
+
+                timeline.getKeyFrames().addAll(
+                        new KeyFrame(Duration.ZERO, new KeyValue(alignmentProperty(), Pos.CENTER_LEFT)),
+                        new KeyFrame(Duration.millis(300), new KeyValue(alignmentProperty(), Pos.CENTER_RIGHT))
+                );
+
+                timeline.setOnFinished(e -> background.setBackground(new Background(new BackgroundFill(Dark.CYAN,new CornerRadii(getRadius()),null))));
+
             }else{
-                setBackground(new Background(new BackgroundFill(Color.web("#243441"),new CornerRadii(getRadius()),null)));
-                TranslateTransition transition = new TranslateTransition(Duration.millis(300), graphicProperty().get());
+                TranslateTransition transition = new TranslateTransition(Duration.millis(300),toggle);
                 transition.setToX(0);
                 transition.play();
+
+
+                timeline.getKeyFrames().addAll(
+                        new KeyFrame(Duration.ZERO, new KeyValue(alignmentProperty(), Pos.CENTER_RIGHT)),
+                        new KeyFrame(Duration.millis(300), new KeyValue(alignmentProperty(), Pos.CENTER_LEFT))
+                );
+                timeline.setOnFinished(e -> background.setBackground(new Background(new BackgroundFill(this.getBackground().getFills().get(0).getFill(),new CornerRadii(getRadius()),null))));
             }
+            timeline.play();
         });
+
     }
     public TypeNeumorphism getNeumorphism() {
         return neumorphism.get();
@@ -105,7 +149,5 @@ public class DNeuToggleSwitch extends ToggleButton {
     public void setRadius(double radius) {
         this.radius.set(radius);
     }
-
-
 
 }
