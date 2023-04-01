@@ -16,7 +16,7 @@ public class Main extends Application {
         root.setRadius(0);
         root.setNeumorphism(TypeNeumorphism.NONE);
         root.setPrefSize(900,800);
-        root.setColor(Color.MAROON);
+        root.setColor(Color.DARKOLIVEGREEN);
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
@@ -33,7 +33,6 @@ public class Main extends Application {
         DNeuPane dNeuPane = new DNeuPane();
         dNeuPane.setLayoutX(200);
         dNeuPane.setLayoutY(500);
-
 
 
         root.getChildren().addAll(dNueHBox,dNeuAnchorPane,dNeuPane);

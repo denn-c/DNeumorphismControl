@@ -1,13 +1,16 @@
 package containers;
 
-import javafx.beans.property.*;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ListChangeListener;
 import javafx.scene.Node;
-import javafx.scene.layout.*;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import neumorphism.DNeumorphism;
 import neumorphism.Neumorphism;
+import neumorphism.DNeumorphism;
 import neumorphism.TypeNeumorphism;
 
 public class DNeuPane extends Pane implements DNeumorphism {
@@ -18,7 +21,7 @@ public class DNeuPane extends Pane implements DNeumorphism {
 
     public DNeuPane() {
         super();
-        setPrefSize(200, 200);
+        setPrefSize(200,100);
         setNeumorphism(neumorphism.get());
         neumorphismProperty().addListener((observable, oldValue, newValue) -> setNeumorphism(newValue));
         radiusProperty().addListener((observable, oldValue, newValue) -> setRadius(newValue.doubleValue()));
@@ -32,8 +35,8 @@ public class DNeuPane extends Pane implements DNeumorphism {
         getChildren().addListener((ListChangeListener<Node>) change -> getChildren().stream()
                 .filter(child -> child instanceof DNeumorphism)
                 .forEach(child -> ((DNeumorphism) child).setColor(getColor())));
-    }
 
+    }
 
     @Override
     public TypeNeumorphism getNeumorphism() {
@@ -64,7 +67,7 @@ public class DNeuPane extends Pane implements DNeumorphism {
     @Override
     public void setRadius(double radius) {
         this.radius.set(radius);
-        Neumorphism.setNeumorphism(this, getNeumorphism(), radius, (Color) getColor());
+        Neumorphism.setNeumorphism(this, getNeumorphism(), radius, (Color)getColor());
     }
 
     @Override

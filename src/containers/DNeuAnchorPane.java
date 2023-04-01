@@ -31,6 +31,7 @@ public class DNeuAnchorPane extends AnchorPane implements DNeumorphism {
                     .filter(child -> child instanceof DNeumorphism)
                     .forEach(child -> ((DNeumorphism) child).setColor(newValue));
         });
+
         getChildren().addListener((ListChangeListener<Node>) change -> getChildren().stream()
                 .filter(child -> child instanceof DNeumorphism)
                 .forEach(child -> ((DNeumorphism) child).setColor(getColor())));
