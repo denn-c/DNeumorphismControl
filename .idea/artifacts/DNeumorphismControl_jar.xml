@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="DNeumorphismControl:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/DNeumorphismControl_jar</output-path>
+    <root id="archive" name="DNeumorphismControl.jar">
+      <element id="module-output" name="DNeumorphismControl" />
+    </root>
+  </artifact>
+</component>
