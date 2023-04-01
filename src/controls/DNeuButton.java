@@ -37,18 +37,18 @@ public class DNeuButton extends Button {
         setTextFill(Color.WHITE);
         setText("DNeuButton");
 
-        Neumorphism.setNeumorphism(this, getNeumorphism(), getRadius());
+        Neumorphism.setNeumorphism(this, getNeumorphism(), getRadius(),Color.DARKBLUE);
 
         neumorphismProperty().addListener(observable -> {
             TypeNeumorphism type = getNeumorphism();
             if (type == TypeNeumorphism.OUTER) {
-                Neumorphism.setNeumorphism(this, TypeNeumorphism.OUTER, getRadius());
+                Neumorphism.setNeumorphism(this, TypeNeumorphism.OUTER, getRadius(),Color.DARKBLUE);
 
             } else if (type == TypeNeumorphism.INNER) {
-                Neumorphism.setNeumorphism(this, TypeNeumorphism.INNER, getRadius());
+                Neumorphism.setNeumorphism(this, TypeNeumorphism.INNER, getRadius(),Color.DARKBLUE);
 
             } else {
-                Neumorphism.setNeumorphism(this, TypeNeumorphism.NONE, getRadius());
+                Neumorphism.setNeumorphism(this, TypeNeumorphism.NONE, getRadius(),Color.DARKBLUE);
             }
         });
 
@@ -58,7 +58,7 @@ public class DNeuButton extends Button {
             if (newValue) {
                 Neumorphism.setNeumorphismFocus(this, getNeumorphism(), getRadius());
             } else {
-                Neumorphism.setNeumorphism(this, getNeumorphism(), getRadius());
+                Neumorphism.setNeumorphism(this, getNeumorphism(), getRadius(),Color.DARKBLUE);
             }
         });
     }

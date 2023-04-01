@@ -14,12 +14,13 @@ import javafx.geometry.Pos;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 import neumorphism.Neumorphism;
 import neumorphism.TypeNeumorphism;
 
-public class DNeuToggleSwitch extends ToggleButton {
+public class DNeuToggleSwitch extends ToggleButton {/*
 
     private final ObjectProperty<TypeNeumorphism> neumorphism = new SimpleObjectProperty<>(TypeNeumorphism.INNER);
     private final DoubleProperty radius = new SimpleDoubleProperty(300);
@@ -29,7 +30,7 @@ public class DNeuToggleSwitch extends ToggleButton {
 
         prefWidthProperty().set(90);
         prefHeightProperty().set(40);
-        Neumorphism.setNeumorphism(this, getNeumorphism(), getRadius());
+        Neumorphism.setNeumorphism(this, getNeumorphism(), getRadius(), Color.WHITE);
 
         Pane background = new Pane();
         background.setMaxSize(getPrefWidth(),getPrefHeight());
@@ -42,7 +43,7 @@ public class DNeuToggleSwitch extends ToggleButton {
         toggle.setMinSize(getPrefHeight(),getPrefHeight());
         toggle.setPrefSize(getPrefHeight(),getPrefHeight());
         toggle.setBackground(new Background(new BackgroundFill(this.getBackground().getFills().get(0).getFill(),new CornerRadii(getRadius()),null)));
-        Neumorphism.setNeumorphism(toggle,TypeNeumorphism.OUTER, getRadius());
+        Neumorphism.setNeumorphism(toggle,TypeNeumorphism.OUTER, getRadius(),Color.WHITE);
 
         background.getChildren().add(toggle);
         setGraphic(background);
@@ -57,21 +58,21 @@ public class DNeuToggleSwitch extends ToggleButton {
                 Neumorphism.setNeumorphismFocus(this,getNeumorphism(),getRadius());
                 Neumorphism.setNeumorphismFocus(toggle,TypeNeumorphism.OUTER,getRadius());
             } else {
-                Neumorphism.setNeumorphism(this,getNeumorphism(),getRadius());
-                Neumorphism.setNeumorphism(toggle,TypeNeumorphism.OUTER,getRadius());
+                Neumorphism.setNeumorphism(this,getNeumorphism(),getRadius(),Color.WHITE);
+                Neumorphism.setNeumorphism(toggle,TypeNeumorphism.OUTER,getRadius(),Color.WHITE);
             }
         });
 
         this.neumorphismProperty().addListener(observable -> {
             TypeNeumorphism type = getNeumorphism();
             if (type == TypeNeumorphism.OUTER) {
-                Neumorphism.setNeumorphism(this, TypeNeumorphism.OUTER, getRadius());
+                Neumorphism.setNeumorphism(this, TypeNeumorphism.OUTER, getRadius(),Color.WHITE);
 
             } else if (type == TypeNeumorphism.INNER) {
-                Neumorphism.setNeumorphism(this,   TypeNeumorphism.INNER, getRadius());
+                Neumorphism.setNeumorphism(this,   TypeNeumorphism.INNER, getRadius(),Color.WHITE);
 
             } else {
-                Neumorphism.setNeumorphism(this, TypeNeumorphism.NONE, getRadius());
+                Neumorphism.setNeumorphism(this, TypeNeumorphism.NONE, getRadius(),Color.WHITE);
             }
         });
 
@@ -149,5 +150,5 @@ public class DNeuToggleSwitch extends ToggleButton {
     public void setRadius(double radius) {
         this.radius.set(radius);
     }
-
+*/
 }
