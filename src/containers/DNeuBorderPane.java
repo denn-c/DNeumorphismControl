@@ -3,22 +3,23 @@ package containers;
 import javafx.beans.property.*;
 import javafx.collections.ListChangeListener;
 import javafx.scene.Node;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import neumorphism.DNeumorphism;
 import neumorphism.DNeumorphismContainer;
 import neumorphism.Neumorphism;
+import neumorphism.DNeumorphism;
 import neumorphism.TypeNeumorphism;
 
-public class DNeuAnchorPane extends AnchorPane implements DNeumorphismContainer {
+public class DNeuBorderPane extends BorderPane implements DNeumorphismContainer {
 
     private final ObjectProperty<TypeNeumorphism> neumorphism = new SimpleObjectProperty<>(TypeNeumorphism.RAISED);
     private final ObjectProperty<Paint> color = new SimpleObjectProperty<>(Color.web("#243441"));
     private final DoubleProperty radius = new SimpleDoubleProperty(14);
+
     private final BooleanProperty exclude = new SimpleBooleanProperty(false);
 
-    public DNeuAnchorPane() {
+    public DNeuBorderPane(){
         super();
         setPrefSize(200,200);
         setNeumorphism(neumorphism.get());

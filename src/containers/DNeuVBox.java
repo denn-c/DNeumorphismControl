@@ -3,24 +3,24 @@ package containers;
 import javafx.beans.property.*;
 import javafx.collections.ListChangeListener;
 import javafx.scene.Node;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import neumorphism.DNeumorphism;
 import neumorphism.DNeumorphismContainer;
 import neumorphism.Neumorphism;
+import neumorphism.DNeumorphism;
 import neumorphism.TypeNeumorphism;
 
-public class DNeuAnchorPane extends AnchorPane implements DNeumorphismContainer {
+public class DNeuVBox extends VBox implements DNeumorphismContainer {
 
     private final ObjectProperty<TypeNeumorphism> neumorphism = new SimpleObjectProperty<>(TypeNeumorphism.RAISED);
     private final ObjectProperty<Paint> color = new SimpleObjectProperty<>(Color.web("#243441"));
     private final DoubleProperty radius = new SimpleDoubleProperty(14);
     private final BooleanProperty exclude = new SimpleBooleanProperty(false);
 
-    public DNeuAnchorPane() {
+    public DNeuVBox() {
         super();
-        setPrefSize(200,200);
+        setPrefSize(100,200);
         setNeumorphism(neumorphism.get());
         neumorphismProperty().addListener((observable, oldValue, newValue) -> setNeumorphism(newValue));
         radiusProperty().addListener((observable, oldValue, newValue) -> setRadius(newValue.doubleValue()));

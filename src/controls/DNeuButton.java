@@ -1,108 +1,107 @@
 package controls;
 
-import Themes.Dark;
-import javafx.animation.PauseTransition;
-import javafx.beans.DefaultProperty;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
+import javafx.beans.property.*;
 import javafx.scene.control.Button;
-import javafx.scene.effect.Glow;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
+import javafx.scene.control.ContentDisplay;
+import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.LinearGradient;
-import javafx.scene.paint.Stop;
-import javafx.util.Duration;
+import javafx.scene.paint.Paint;
 import neumorphism.Neumorphism;
+import neumorphism.DNeumorphism;
 import neumorphism.TypeNeumorphism;
 
-public class DNeuButton extends Button {
+public class DNeuButton extends Button implements DNeumorphism {
+    private final ObjectProperty<Paint> color = new SimpleObjectProperty<>(Color.web("#243441"));
+    private final DoubleProperty radius = new SimpleDoubleProperty(200);
+    private final BooleanProperty exclude = new SimpleBooleanProperty(false);
 
-    public final ObjectProperty<TypeNeumorphism> neumorphism = new SimpleObjectProperty<>(TypeNeumorphism.OUTER);
-    public final DoubleProperty radius = new SimpleDoubleProperty(300);
+    private final Region region = new Region();
+    private Paint mainColor;
 
     public DNeuButton() {
         super();
-
-        prefWidthProperty().set(110);
-        prefHeightProperty().set(40);
-        setTextFill(Color.WHITE);
+        Neumorphism.setNeumorphism(this,TypeNeumorphism.RAISED,getRadius(),getColor());
+        setPrefSize(120, 40);
+        setContentDisplay(ContentDisplay.CENTER);
+        region.setPrefSize(getPrefWidth(),getPrefHeight());
+        setGraphic(region);
         setText("DNeuButton");
+        setTextFill(Neumorphism.getTextFill(getColor()));
 
-        Neumorphism.setNeumorphism(this, getNeumorphism(), getRadius(),Color.DARKBLUE);
+        radiusProperty().addListener((observable, oldValue, newValue) -> setRadius(newValue.doubleValue()));
+        colorProperty().addListener((observable, oldValue, newValue) -> setColor(newValue));
 
-        neumorphismProperty().addListener(observable -> {
-            TypeNeumorphism type = getNeumorphism();
-            if (type == TypeNeumorphism.OUTER) {
-                Neumorphism.setNeumorphism(this, TypeNeumorphism.OUTER, getRadius(),Color.DARKBLUE);
-
-            } else if (type == TypeNeumorphism.INNER) {
-                Neumorphism.setNeumorphism(this, TypeNeumorphism.INNER, getRadius(),Color.DARKBLUE);
-
-            } else {
-                Neumorphism.setNeumorphism(this, TypeNeumorphism.NONE, getRadius(),Color.DARKBLUE);
-            }
-        });
-
-        radiusProperty().addListener((observable, oldValue, newValue) -> this.setBackground(new Background(new BackgroundFill(this.getBackground().getFills().get(0).getFill(), new CornerRadii((double) newValue), Insets.EMPTY))));
+        prefHeightProperty().addListener(observable -> region.setPrefSize(getPrefWidth(),getPrefHeight()));
+        prefWidthProperty().addListener(observable -> region.setPrefSize(getPrefWidth(),getPrefHeight()));
 
         focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue) {
-                Neumorphism.setNeumorphismFocus(this, getNeumorphism(), getRadius());
-            } else {
-                Neumorphism.setNeumorphism(this, getNeumorphism(), getRadius(),Color.DARKBLUE);
+            mainColor = getColor();
+            if (newValue){
+                Neumorphism.setNeumorphismFocus(this,TypeNeumorphism.RAISED,getRadius(), getColor());
+            }else {
+                setColor(mainColor);
             }
         });
     }
 
-    public TypeNeumorphism getNeumorphism() {
-        return neumorphism.get();
-    }
-
-    public ObjectProperty<TypeNeumorphism> neumorphismProperty() {
-        return neumorphism;
-    }
-
-    public void setNeumorphism(TypeNeumorphism neumorphism) {
-        this.neumorphism.set(neumorphism);
-    }
-
+    @Override
     public double getRadius() {
         return radius.get();
     }
 
+    @Override
     public DoubleProperty radiusProperty() {
         return radius;
     }
 
+    @Override
     public void setRadius(double radius) {
         this.radius.set(radius);
+        Neumorphism.setNeumorphism(this, TypeNeumorphism.RAISED, radius, getColor());
     }
 
     @Override
-    public void fire() {
-        setColorAction();
-        PauseTransition pauseTransition = new PauseTransition(Duration.millis(100));
-        pauseTransition.setOnFinished(event -> {
-            super.fire();
-            setColor();
-        });
-        pauseTransition.play();
+    public Paint getColor() {
+        return color.get();
     }
 
-    private void setColor() {
-        setBackground(new Background(new BackgroundFill(Dark.ROOT, new CornerRadii(getRadius()), Insets.EMPTY)));
+    @Override
+    public ObjectProperty<Paint> colorProperty() {
+        return color;
     }
 
-    private void setColorAction() {
-        setBackground(new Background(new BackgroundFill(Dark.FOCUS_SHADE, new CornerRadii(getRadius()), Insets.EMPTY)));
+    @Override
+    public void setColor(Paint color) {
+        this.color.set(color);
+        Neumorphism.setNeumorphism(this, TypeNeumorphism.RAISED, getRadius(), color);
+        setTextFill(Neumorphism.getTextFill(color));
+    }
+
+
+    @Override
+    public boolean isExclude() {
+        return exclude.get();
+    }
+
+    @Override
+    public BooleanProperty excludeProperty() {
+        return exclude;
+    }
+
+    @Override
+    public void setExclude(boolean exclude) {
+        this.exclude.set(exclude);
+    }
+
+    @Override
+    public void arm() {
+        Neumorphism.setNeumorphismFocus(region,TypeNeumorphism.INSET,getRadius(), getColor());
+        super.arm();
+    }
+
+    @Override
+    public void disarm() {
+        Neumorphism.setNeumorphismFocus(region,TypeNeumorphism.NONE,getRadius(), mainColor);
+        super.disarm();
     }
 }
