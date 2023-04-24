@@ -1,10 +1,11 @@
 import containers.*;
 import controls.DNeuButton;
+import controls.DNeuLabel;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.LinearGradient;
-import javafx.scene.paint.Stop;
 import javafx.stage.Stage;
 import neumorphism.TypeNeumorphism;
 
@@ -17,60 +18,44 @@ public class Main extends Application {
         root.setRadius(0);
         root.setNeumorphism(TypeNeumorphism.NONE);
         root.setPrefSize(1050,800);
-        Stop[] stops = new Stop[] {
-                new Stop(0, Color.rgb(200,200,200)),
-                new Stop(1, Color.rgb(150,150,150))
-        };
-        LinearGradient gradient = new LinearGradient(0, 0, 1, 1, true, null, stops);
-
-//        root.setColor(Color.MOCCASIN);
+        root.setColor(Color.DARKMAGENTA);
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
 
-        DNeuAnchorPane dNeuAnchorPane = new DNeuAnchorPane();
-        dNeuAnchorPane.setLayoutX(50);
-        dNeuAnchorPane.setLayoutY(50);
 
-        DNeuBorderPane dNeuBorderPane = new DNeuBorderPane();
-        dNeuBorderPane.setLayoutX(300);
-        dNeuBorderPane.setLayoutY(50);
+        DNeuLabel dNeuLabel = new DNeuLabel();
+        dNeuLabel.setText("CHUYMA");
+        dNeuLabel.setLayoutX(50);
+        dNeuLabel.setLayoutY(50);
 
-        DNeuHBox dNueHBox = new DNeuHBox();
-        dNueHBox.setLayoutX(550);
-        dNueHBox.setLayoutY(50);
+        DNeuPane dNuePane3 = new DNeuPane();
+        dNuePane3.setLayoutX(550);
+        dNuePane3.setLayoutY(50);
+        dNuePane3.setNeumorphism(TypeNeumorphism.RIDGE);
+        dNuePane3.setExclude(true);
 
-        DNeuPane dNeuPane = new DNeuPane();
-        dNeuPane.setLayoutX(800);
-        dNeuPane.setLayoutY(50);
+        DNeuPane dNeuPane4 = new DNeuPane();
+        dNeuPane4.setLayoutX(800);
+        dNeuPane4.setLayoutY(50);
 
-        DNeuFlowPane dNeuFlowPane = new DNeuFlowPane();
-        dNeuFlowPane.setLayoutX(50);
-        dNeuFlowPane.setLayoutY(300);
+        DNeuPane dNeuPane5 = new DNeuPane();
+        dNeuPane5.setLayoutX(50);
+        dNeuPane5.setLayoutY(300);
+        dNeuPane5.setNeumorphism(TypeNeumorphism.INSET);
 
-        DNeuGridPane dNeuGridPane = new DNeuGridPane();
-        dNeuGridPane.setLayoutX(300);
-        dNeuGridPane.setLayoutY(300);
-
-        DNeuStackPane dNeuStackPane = new DNeuStackPane();
-        dNeuStackPane.setLayoutX(550);
-        dNeuStackPane.setLayoutY(300);
-
-        DNeuTextFlow dNeuTextFlow = new DNeuTextFlow();
-        dNeuTextFlow.setLayoutX(800);
-        dNeuTextFlow.setLayoutY(300);
-
-        DNeuTilePane dNeuTilePane = new DNeuTilePane();
-        dNeuTilePane.setLayoutX(50);
-        dNeuTilePane.setLayoutY(550);
-
-        DNeuVBox dNeuVBox = new DNeuVBox();
-        dNeuVBox.setLayoutX(300);
-        dNeuVBox.setLayoutY(550);
+        DNeuPane dNeuPane6 = new DNeuPane();
+        dNeuPane6.setLayoutX(300);
+        dNeuPane6.setLayoutY(300);
+        dNeuPane4.setNeumorphism(TypeNeumorphism.RIDGE);
 
         DNeuButton dNeuButton = new DNeuButton();
         dNeuButton.setLayoutX(550);
         dNeuButton.setLayoutY(550);
+        Image image = new Image("logo.png");
+        ImageView imageView = new ImageView();
+        imageView.setImage(image);
+        dNeuButton.setGraphic(imageView);
 
         DNeuButton dNeuButton1 = new DNeuButton();
         dNeuButton1.setLayoutX(550);
@@ -83,12 +68,14 @@ public class Main extends Application {
         DNeuButton dNeuButton3 = new DNeuButton();
         dNeuButton3.setLayoutX(800);
         dNeuButton3.setLayoutY(550);
+        dNeuButton3.setExclude(true);
+        dNeuButton3.setColor(Color.RED);
 
         DNeuButton dNeuButton4 = new DNeuButton();
         dNeuButton4.setLayoutX(800);
         dNeuButton4.setLayoutY(650);
         dNeuButton4.setExclude(true);
-        root.getChildren().addAll(dNeuAnchorPane,dNeuBorderPane,dNueHBox,dNeuPane,dNeuFlowPane,dNeuGridPane,dNeuStackPane,dNeuTextFlow,dNeuTilePane,dNeuVBox,dNeuButton,dNeuButton1,dNeuButton2,dNeuButton3,dNeuButton4);
+        root.getChildren().addAll(dNeuLabel,dNuePane3,dNeuPane4,dNeuPane5,dNeuPane6,dNeuButton,dNeuButton1,dNeuButton2,dNeuButton3,dNeuButton4);
     }
 
     public static void main(String[] args) {

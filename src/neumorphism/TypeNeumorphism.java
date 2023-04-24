@@ -1,5 +1,5 @@
 package neumorphism;
 
 public enum TypeNeumorphism {
-    INSET, RAISED, NONE,
+    INSET, RAISED, NONE,RIDGE
 }

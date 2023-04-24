@@ -1,5 +1,5 @@
 package controls;
-
+/*
 import Themes.Dark;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -11,7 +11,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.ContentDisplay;*/
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;

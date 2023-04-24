@@ -6,10 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import neumorphism.DNeumorphism;
-import neumorphism.DNeumorphismContainer;
-import neumorphism.Neumorphism;
-import neumorphism.TypeNeumorphism;
+import neumorphism.*;
 
 public class DNeuAnchorPane extends AnchorPane implements DNeumorphismContainer {
 
@@ -24,18 +21,8 @@ public class DNeuAnchorPane extends AnchorPane implements DNeumorphismContainer 
         setNeumorphism(neumorphism.get());
         neumorphismProperty().addListener((observable, oldValue, newValue) -> setNeumorphism(newValue));
         radiusProperty().addListener((observable, oldValue, newValue) -> setRadius(newValue.doubleValue()));
-        excludeProperty().addListener((observable, oldValue, newValue) -> setExclude(newValue));
-
-        colorProperty().addListener((observable, oldValue, newValue) -> {
-            setColor(newValue);
-            getChildren().stream()
-                    .filter(child -> child instanceof DNeumorphism && !((DNeumorphism) child).excludeProperty().get())
-                    .forEach(child -> ((DNeumorphism) child).setColor(newValue));
-        });
-
-        getChildren().addListener((ListChangeListener<Node>) change -> getChildren().stream()
-                .filter(child -> child instanceof DNeumorphism && !((DNeumorphism) child).excludeProperty().get())
-                .forEach(child -> ((DNeumorphism) child).setColor(getColor())));
+        colorProperty().addListener((observable, oldValue, newValue) -> childrenApplyColor(newValue));
+        getChildren().addListener((ListChangeListener<Node>) change -> childrenApplyColor(getColor()));
     }
 
     @Override
@@ -99,5 +86,11 @@ public class DNeuAnchorPane extends AnchorPane implements DNeumorphismContainer 
     @Override
     public void setExclude(boolean exclude) {
         this.exclude.set(exclude);
+    }
+
+    private void childrenApplyColor(Paint paint){
+        getChildren().stream()
+                .filter(child ->(child instanceof DNeumorphism) && !((DNeumorphism) child).excludeProperty().get())
+                .forEach(child -> ((DNeumorphism) child).setColor(paint));
     }
 }

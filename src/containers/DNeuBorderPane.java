@@ -6,17 +6,13 @@ import javafx.scene.Node;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import neumorphism.DNeumorphismContainer;
-import neumorphism.Neumorphism;
-import neumorphism.DNeumorphism;
-import neumorphism.TypeNeumorphism;
+import neumorphism.*;
 
 public class DNeuBorderPane extends BorderPane implements DNeumorphismContainer {
 
     private final ObjectProperty<TypeNeumorphism> neumorphism = new SimpleObjectProperty<>(TypeNeumorphism.RAISED);
     private final ObjectProperty<Paint> color = new SimpleObjectProperty<>(Color.web("#243441"));
     private final DoubleProperty radius = new SimpleDoubleProperty(14);
-
     private final BooleanProperty exclude = new SimpleBooleanProperty(false);
 
     public DNeuBorderPane(){
@@ -25,18 +21,8 @@ public class DNeuBorderPane extends BorderPane implements DNeumorphismContainer 
         setNeumorphism(neumorphism.get());
         neumorphismProperty().addListener((observable, oldValue, newValue) -> setNeumorphism(newValue));
         radiusProperty().addListener((observable, oldValue, newValue) -> setRadius(newValue.doubleValue()));
-        excludeProperty().addListener((observable, oldValue, newValue) -> setExclude(newValue));
-
-        colorProperty().addListener((observable, oldValue, newValue) -> {
-            setColor(newValue);
-            getChildren().stream()
-                    .filter(child -> child instanceof DNeumorphism && !((DNeumorphism) child).excludeProperty().get())
-                    .forEach(child -> ((DNeumorphism) child).setColor(newValue));
-        });
-
-        getChildren().addListener((ListChangeListener<Node>) change -> getChildren().stream()
-                .filter(child -> child instanceof DNeumorphism && !((DNeumorphism) child).excludeProperty().get())
-                .forEach(child -> ((DNeumorphism) child).setColor(getColor())));
+        colorProperty().addListener((observable, oldValue, newValue) ->childrenApplyColor(newValue));
+        getChildren().addListener((ListChangeListener<Node>) change -> childrenApplyColor(getColor()));
     }
 
     @Override
@@ -100,5 +86,11 @@ public class DNeuBorderPane extends BorderPane implements DNeumorphismContainer 
     @Override
     public void setExclude(boolean exclude) {
         this.exclude.set(exclude);
+    }
+
+    private void childrenApplyColor(Paint paint){
+        getChildren().stream()
+                .filter(child ->(child instanceof DNeumorphism) && !((DNeumorphism) child).excludeProperty().get())
+                .forEach(child -> ((DNeumorphism) child).setColor(paint));
     }
 }
